@@ -2,19 +2,10 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { api } from '@/utils/api.js'
+import { setNested } from '@/utils/shared.js'
 
 const POLL_INTERVAL  = 30_000
 const WEEKLY_CYCLE   = ['pending', 'in-progress', 'done']
-
-function setNested(obj, dotPath, value) {
-  const keys = dotPath.split('.')
-  if (keys.length === 1) return { ...obj, [dotPath]: value }
-  const [head, ...tail] = keys
-  return {
-    ...obj,
-    [head]: setNested(obj[head] && typeof obj[head] === 'object' ? obj[head] : {}, tail.join('.'), value),
-  }
-}
 
 export function useStatus() {
   const [statuses, setStatuses] = useState([])
@@ -172,23 +163,9 @@ export function useWeekly() {
   return { data, loading, cycleItem, updateLabel }
 }
 
-export function usePhotos() {
-  const [photos,   setPhotos]   = useState([])
-  const [captions, setCaptions] = useState({})
-  const [loading,  setLoading]  = useState(true)
-
-  useEffect(() => {
-    api.getPhotos()
-      .then(({ photos = [], captions = {} }) => { setPhotos(photos); setCaptions(captions) })
-      .catch(() => {})
-      .finally(() => setLoading(false))
-  }, [])
-
-  return { photos, captions, loading }
-}
-
 export function usePriorityOrder(statuses) {
   const [order, setOrder] = useState([])
+  const vaultIds = statuses.map(s => s.vault_id).join()
 
   useEffect(() => {
     if (!statuses.length) return
@@ -202,7 +179,7 @@ export function usePriorityOrder(statuses) {
         setOrder(merged)
       })
       .catch(() => { setOrder(statuses.map(s => s.vault_id)) })
-  }, [statuses.length])
+  }, [vaultIds])
 
   const reorder = useCallback(async (newOrder) => {
     setOrder(newOrder)

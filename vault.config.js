@@ -53,7 +53,4 @@ export const config = {
   // ── CENTRAL VAULT ──────────────────────────────────────────────────────────
   centralVault: join(VAULT_ROOT, 'central-brain'),
 
-  // ── PHOTOS ─────────────────────────────────────────────────────────────────
-  photosDir: process.env.PHOTOS_DIR || join(HOME, 'Documents', `The Alchemist's Atrium`, 'cockpit', 'photos'),
-
 }

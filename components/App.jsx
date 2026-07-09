@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { useStatus, usePriorityOrder } from '@/hooks/useStatus.js'
+import { getWeekNumber } from '@/utils/shared.js'
 
 import FlipClock     from './FlipClock.jsx'
 import QuoteWidget   from './QuoteWidget.jsx'
@@ -10,14 +11,6 @@ import ProjectPanel  from './ProjectPanel.jsx'
 import HabitPanel    from './HabitPanel.jsx'
 import InboxPanel    from './InboxPanel.jsx'
 import WeeklyPanel   from './WeeklyPanel.jsx'
-
-function getWeekNumber(date) {
-  const d   = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
-  const day = d.getUTCDay() || 7
-  d.setUTCDate(d.getUTCDate() + 4 - day)
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
-  return Math.ceil((((d - yearStart) / 86400000) + 1) / 7)
-}
 
 function getDayOfYear(date) {
   const y = date.getFullYear(), m = date.getMonth(), d = date.getDate()

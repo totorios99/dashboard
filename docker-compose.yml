@@ -6,7 +6,6 @@ services:
     environment:
       DATABASE_URL: "file:/data/cockpit.db"
       VAULT_ROOT: /vaults
-      PHOTOS_DIR: /photos
     volumes:
       # SQLite database — persists across container restarts
       - cockpit_db:/data
@@ -16,8 +15,6 @@ services:
       - ${HOME}/Documents/The Alchemist's Atrium/spirituality-brain:/vaults/spirituality-brain:ro
       - ${HOME}/Documents/The Alchemist's Atrium/homelab-brain:/vaults/homelab-brain:ro
       - ${HOME}/Documents/The Alchemist's Atrium/central-brain:/vaults/central-brain
-      # Photos directory
-      - ./photos:/photos:ro
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:3004/api/health"]

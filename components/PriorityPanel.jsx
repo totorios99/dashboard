@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react'
 import { flushSync } from 'react-dom'
+import { api } from '@/utils/api.js'
 
 function EditableField({ value, className, emptyClass, placeholder, onSave }) {
   const [editing, setEditing] = useState(false)
@@ -43,11 +44,12 @@ function EditableField({ value, className, emptyClass, placeholder, onSave }) {
   )
 }
 
+// keys must match vault ids in vault.config.js
 const VAULT_COLOR = {
-  cybersecurity: 'p-coral',
-  fitness:       'p-jade',
-  spirituality:  'p-amethyst',
-  homelab:       'p-azure',
+  cyber:        'p-coral',
+  fitness:      'p-jade',
+  spirituality: 'p-amethyst',
+  homelab:      'p-azure',
 }
 
 function colorClass(vaultId) {
@@ -208,11 +210,7 @@ export default function PriorityPanel({ statuses, onUpdate, order, onReorder }) 
               className="p-label"
               onClick={e => {
                 e.stopPropagation()
-                fetch('/api/open-vault', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ vault: s.vault_name || s.vault_id }),
-                })
+                api.openVault(s.vault_name || s.vault_id).catch(() => {})
               }}
             >{s.vault_label || s.vault_id}</span>
             <EditableField

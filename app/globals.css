@@ -616,3 +616,34 @@ body {
 /* ── utilities ── */
 @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 .fade-up { animation: fadeUp .35s ease both; }
+
+/* ── entrance stagger ── */
+.header { animation: fadeUp .4s ease both; }
+.main-row .card,
+.bottom-row .card { animation: fadeUp .45s cubic-bezier(.2,.8,.2,1) both; }
+.main-row .card:nth-child(1)   { animation-delay: 60ms; }
+.main-row .card:nth-child(2)   { animation-delay: 120ms; }
+.main-row .card:nth-child(3)   { animation-delay: 180ms; }
+.bottom-row .card:nth-child(1) { animation-delay: 240ms; }
+.bottom-row .card:nth-child(2) { animation-delay: 300ms; }
+
+/* ── habit pip pop ── */
+@keyframes pipPop { 50% { transform: scale(1.35); } }
+.streak .pip.on { animation: pipPop .18s cubic-bezier(.2,.8,.2,1); }
+
+/* ── weekly checkmark draw-in ── */
+.checkbox svg path {
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+  transition: stroke-dashoffset .25s ease .05s;
+}
+.check-item.done .checkbox svg path { stroke-dashoffset: 0; }
+
+/* ── reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

@@ -3,11 +3,12 @@
 import { useCallback, useState, useEffect } from 'react'
 import { api } from '@/utils/api.js'
 
+// keys must match vault ids in vault.config.js
 const VAULT_CLASS = {
-  cybersecurity: 'h-cyber',
-  fitness:       'h-fit',
-  spirituality:  'h-spirit',
-  homelab:       'h-home',
+  cyber:        'h-cyber',
+  fitness:      'h-fit',
+  spirituality: 'h-spirit',
+  homelab:      'h-home',
 }
 
 const HABITS_PER_PAGE = 4
@@ -24,13 +25,14 @@ export default function HabitPanel({ statuses, onUpdate }) {
   const [histories, setHistories] = useState({})
   const [page,      setPage]      = useState(0)
 
+  const vaultIds = statuses.map(s => s.vault_id).join()
   useEffect(() => {
     statuses.forEach(s => {
       api.getHabitHistory(s.vault_id)
         .then(h => setHistories(prev => ({ ...prev, [s.vault_id]: h })))
         .catch(() => {})
     })
-  }, [statuses])
+  }, [vaultIds])
 
   const habits = statuses.flatMap(s => {
     if (!s.habits || typeof s.habits !== 'object') return []
@@ -81,7 +83,7 @@ export default function HabitPanel({ statuses, onUpdate }) {
           </div>
         )}
       </div>
-      <div>
+      <div key={safePage} className="fade-up">
         {pageHabits.map(h => (
           <HabitRow key={`${h.vaultId}-${h.key}`} habit={h} onToggle={toggle} />
         ))}
@@ -104,16 +106,8 @@ function HabitRow({ habit, onToggle }) {
   })()
 
   const handleToggle = () => {
-    const next = !localDone
-    setLocalDone(next)
+    setLocalDone(!localDone)
     onToggle(vaultId, habit.key, localDone)
-  }
-
-  const handlePip = (idx) => {
-    if (idx === 6) {
-      setLocalDone(!history[idx])
-      onToggle(vaultId, habit.key, history[idx])
-    }
   }
 
   const cls = habitClass(vaultId)
@@ -123,7 +117,7 @@ function HabitRow({ habit, onToggle }) {
       <div>
         <div className="h-name">{label}</div>
         <div className="h-meta">
-          <span>{streak} day streak</span>
+          <span key={streak} className="fade-up">{streak} day streak</span>
           {vaultLabel && <> · <b>{vaultLabel}</b></>}
         </div>
       </div>
@@ -131,13 +125,15 @@ function HabitRow({ habit, onToggle }) {
         {history.map((filled, i) => {
           const isToday = i === 6
           const active  = isToday ? localDone : filled
-          return (
+          return isToday ? (
             <button
               key={i}
               className={`pip${active ? ' on' : ''}`}
-              aria-label={`${label} day ${i + 1}${isToday ? ' (today)' : ''}`}
-              onClick={isToday ? handleToggle : () => handlePip(i)}
+              aria-label={`${label} today`}
+              onClick={handleToggle}
             />
+          ) : (
+            <span key={i} className={`pip${active ? ' on' : ''}`} aria-hidden="true" />
           )
         })}
       </div>

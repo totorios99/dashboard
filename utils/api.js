@@ -28,8 +28,7 @@ export const api = {
   getWeekly:        ()                   => request('GET',    '/weekly'),
   updateWeeklyItem: (index, status)      => request('PATCH',  `/weekly/${index}`, { status }),
   updateWeeklyLabel:(index, label)       => request('PATCH',  `/weekly/${index}`, { label }),
-  getPhotos:        ()                   => request('GET',    '/photos'),
   getPriorityOrder: ()                   => request('GET',    '/priority-order'),
   savePriorityOrder:(order)              => request('PATCH',  '/priority-order', { order }),
-  health:           ()                   => request('GET',    '/health'),
+  openVault:        (vault)              => request('POST',   '/open-vault', { vault }),
 }
