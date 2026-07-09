@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model InboxItem {
+  id        Int      @id @default(autoincrement())
+  text      String
+  tag       String   @default("general")
+  createdAt DateTime @default(now())
+}
+
+model WeeklyItem {
+  id      Int    @id @default(autoincrement())
+  weekKey String
+  label   String
+  status  String @default("pending")
+  pos     Int    @default(0)
+}
+
+model Setting {
+  key   String @id
+  value String
+}
+
+model HabitHistory {
+  id       Int     @id @default(autoincrement())
+  vaultId  String
+  date     String
+  habitKey String
+  value    Boolean @default(false)
+
+  @@unique([vaultId, date, habitKey])
+}

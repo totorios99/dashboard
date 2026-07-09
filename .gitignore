@@ -1,0 +1,8 @@
+node_modules
+.next
+.env
+.ds-sync
+ds-bundle
+prisma/**/*.db
+*.zip
+photos/

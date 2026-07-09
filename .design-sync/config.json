@@ -1,0 +1,28 @@
+{
+  "projectId": "3ea8ef5b-edeb-43b5-ba5c-d71e27e579ff",
+  "pkg": "second-brain-cockpit",
+  "globalName": "AlchemistAtrium",
+  "shape": "package",
+  "srcDir": "components",
+  "tsconfig": "jsconfig.json",
+  "cssEntry": "ds-tokens.css",
+  "entry": "ds-entry.js",
+  "runtimeFontPrefixes": ["Inter", "JetBrains Mono", "Lora"],
+  "readmeHeader": ".design-sync/conventions.md",
+  "overrides": {
+    "HabitPanel":    { "cardMode": "column" },
+    "PriorityPanel": { "cardMode": "column" },
+    "ProjectPanel":  { "cardMode": "column" }
+  },
+  "componentSrcMap": {
+    "App": null,
+    "FlipClock": "components/FlipClock.jsx",
+    "HabitPanel": "components/HabitPanel.jsx",
+    "InboxPanel": "components/InboxPanel.jsx",
+    "PolaroidWidget": "components/PolaroidWidget.jsx",
+    "PriorityPanel": "components/PriorityPanel.jsx",
+    "ProjectPanel": "components/ProjectPanel.jsx",
+    "QuoteWidget": "components/QuoteWidget.jsx",
+    "WeeklyPanel": "components/WeeklyPanel.jsx"
+  }
+}
