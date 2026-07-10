@@ -232,7 +232,7 @@ body {
 
 /* ── main 3-col row ── */
 .main-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 22px; align-items: stretch; }
-.main-row .card  { height: 486px; }
+.main-row .card  { height: 420px; }
 .card { padding: 22px 24px; display: flex; flex-direction: column; overflow: hidden; }
 
 /* scrollable list region inside fixed-height cards */

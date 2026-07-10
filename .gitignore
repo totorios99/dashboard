@@ -6,3 +6,4 @@ ds-bundle
 prisma/**/*.db
 *.zip
 photos/
+.claude/*.tmp.*
