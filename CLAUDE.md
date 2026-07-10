@@ -5,9 +5,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev        # Next.js dev server on port 3004
+npm run dev        # Next.js dev server on port 3005
 npm run build      # prisma generate + next build
-npm run start      # production server on port 3004
+npm run start      # production server on port 3005
 npm run db:push    # push Prisma schema changes to SQLite
 npm run db:studio  # open Prisma Studio
 ```
@@ -20,7 +20,7 @@ No test suite exists.
 
 ### Single-process runtime
 
-Next.js 15 App Router on **port 3004**. API routes live in `app/api/`. No separate Express server.
+Next.js 15 App Router on **port 3005**. API routes live in `app/api/`. No separate Express server.
 
 ### Configuration
 

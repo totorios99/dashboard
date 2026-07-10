@@ -37,8 +37,8 @@ RUN mkdir -p /data && chown nextjs:nodejs /data
 
 USER nextjs
 
-EXPOSE 3004
-ENV PORT=3004
+EXPOSE 3005
+ENV PORT=3005
 ENV HOSTNAME="0.0.0.0"
 
 # Run migrations then start

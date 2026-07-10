@@ -3,7 +3,7 @@ services:
     # built by .github/workflows/deploy.yml on every push to main
     image: ghcr.io/totorios99/dashboard:latest
     ports:
-      - "3004:3004"
+      - "3005:3005"
     environment:
       DATABASE_URL: "file:/data/cockpit.db"
       VAULT_ROOT: /vaults
@@ -18,7 +18,7 @@ services:
       - ${HOME}/Documents/The Alchemist's Atrium/central-brain:/vaults/central-brain
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3004/api/health"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:3005/api/health"]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -47,4 +47,4 @@ x-casaos:
   category: Utilities
   description:
     en_us: Personal dashboard reading Obsidian vaults, habits, and weekly checklist.
-  port_map: "3004"
+  port_map: "3005"
