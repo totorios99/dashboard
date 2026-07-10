@@ -3,6 +3,20 @@ import './globals.css'
 export const metadata = {
   title: 'Second Brain Cockpit',
   description: 'Central Nervous System dashboard',
+  manifest: '/manifest.json',
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'Cockpit',
+  },
+}
+
+export const viewport = {
+  themeColor: '#06070a',
 }
 
 export default function RootLayout({ children }) {

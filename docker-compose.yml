@@ -1,6 +1,7 @@
 services:
   cockpit:
-    build: .
+    # built by .github/workflows/deploy.yml on every push to main
+    image: ghcr.io/totorios99/dashboard:latest
     ports:
       - "3004:3004"
     environment:
@@ -21,6 +22,29 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+      icon: "https://raw.githubusercontent.com/totorios99/dashboard/main/public/icon-512.png"
+
+  # polls ghcr.io for a newer image tag and recreates labeled containers —
+  # this is the auto-deploy step, no inbound webhook/runner needed
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --label-enable --interval 300 --cleanup
+    restart: unless-stopped
 
 volumes:
   cockpit_db:
+
+x-casaos:
+  architectures: ["amd64", "arm64"]
+  main: cockpit
+  icon: "https://raw.githubusercontent.com/totorios99/dashboard/main/public/icon-512.png"
+  title:
+    en_us: Second Brain Cockpit
+  category: Utilities
+  description:
+    en_us: Personal dashboard reading Obsidian vaults, habits, and weekly checklist.
+  port_map: "3004"

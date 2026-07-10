@@ -69,7 +69,11 @@ export default function ProjectPanel({ statuses, onUpdate }) {
           <span className="vault-badge" style={{ background: v.bg, color: v.color, border: `1px solid ${v.border}` }}>
             {project.vaultLabel}
           </span>
-          {project.started && <span className="since">since {project.started}</span>}
+          {project.started && (
+            <span className="since">
+              since {new Date(project.started).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            </span>
+          )}
         </div>
 
         {project.nextMove && (
