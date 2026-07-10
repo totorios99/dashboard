@@ -20,7 +20,7 @@ No test suite exists.
 
 ### Single-process runtime
 
-Next.js 15 App Router on **port 3005**. API routes live in `app/api/`. No separate Express server.
+Next.js 16 App Router on **port 3005**. API routes live in `app/api/`. No separate Express server.
 
 ### Configuration
 

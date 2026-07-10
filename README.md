@@ -4,7 +4,7 @@ Personal dashboard that reads an Obsidian vault network (read-only) and layers m
 
 ## Stack
 
-Next.js 15 (App Router) · Prisma + SQLite · single process, port 3005.
+Next.js 16 (App Router) · Prisma + SQLite · single process, port 3005.
 
 ## Develop
 
