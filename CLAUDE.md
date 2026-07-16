@@ -107,8 +107,11 @@ Cards use `height: 486px` / `height: 384px` with `display:flex; flex-direction:c
 ```dockerfile
 # runner stage needs Prisma CLI's full dep tree for db push on startup —
 # copy whole node_modules from the deps stage, not a hand-picked subset
-# (@prisma/config -> effect -> fast-check -> ... shifts between versions)
+# (@prisma/config -> effect -> fast-check -> ... shifts between versions).
+# Must come BEFORE the .prisma copy — deps never ran `prisma generate`,
+# so its node_modules/.prisma would otherwise clobber the generated client.
 COPY --from=deps /app/node_modules ./node_modules
+COPY --from=builder /app/node_modules/.prisma  ./node_modules/.prisma
 CMD ["sh", "-c", "node node_modules/prisma/build/index.js db push --skip-generate && node server.js"]
 ```
 

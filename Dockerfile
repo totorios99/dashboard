@@ -27,11 +27,13 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/vault.config.js ./vault.config.js
-COPY --from=builder /app/node_modules/.prisma  ./node_modules/.prisma
 # full deps tree, not a hand-picked subset — prisma's CLI has a deep internal
 # dependency chain (@prisma/config -> effect -> fast-check -> ...) that shifts
-# between versions; curating individual subpaths breaks on every bump
+# between versions; curating individual subpaths breaks on every bump.
+# Must come before the .prisma copy below: deps never ran `prisma generate`,
+# so its node_modules/.prisma would otherwise clobber the generated client.
 COPY --from=deps /app/node_modules ./node_modules
+COPY --from=builder /app/node_modules/.prisma  ./node_modules/.prisma
 
 # DB and vault directories will be volume-mounted
 RUN mkdir -p /data && chown nextjs:nodejs /data
