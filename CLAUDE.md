@@ -105,10 +105,11 @@ Cards use `height: 486px` / `height: 384px` with `display:flex; flex-direction:c
 ### Docker
 
 ```dockerfile
-# runner stage needs Prisma CLI for db push on startup
-COPY --from=builder /app/node_modules/prisma        ./node_modules/prisma
-COPY --from=builder /app/node_modules/.bin/prisma   ./node_modules/.bin/prisma
-CMD ["sh", "-c", "node_modules/.bin/prisma db push --skip-generate && node server.js"]
+# runner stage needs Prisma CLI's full dep tree for db push on startup —
+# copy whole node_modules from the deps stage, not a hand-picked subset
+# (@prisma/config -> effect -> fast-check -> ... shifts between versions)
+COPY --from=deps /app/node_modules ./node_modules
+CMD ["sh", "-c", "node node_modules/prisma/build/index.js db push --skip-generate && node server.js"]
 ```
 
 Vault directories mount `:ro` (read-only). SQLite file must be on a writable volume (`DATABASE_URL=file:/data/cockpit.db` in compose).

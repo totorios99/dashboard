@@ -28,9 +28,10 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/vault.config.js ./vault.config.js
 COPY --from=builder /app/node_modules/.prisma  ./node_modules/.prisma
-COPY --from=builder /app/node_modules/@prisma  ./node_modules/@prisma
-COPY --from=builder /app/node_modules/prisma   ./node_modules/prisma
-COPY --from=builder /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
+# full deps tree, not a hand-picked subset — prisma's CLI has a deep internal
+# dependency chain (@prisma/config -> effect -> fast-check -> ...) that shifts
+# between versions; curating individual subpaths breaks on every bump
+COPY --from=deps /app/node_modules ./node_modules
 
 # DB and vault directories will be volume-mounted
 RUN mkdir -p /data && chown nextjs:nodejs /data
@@ -42,4 +43,4 @@ ENV PORT=3005
 ENV HOSTNAME="0.0.0.0"
 
 # Run migrations then start
-CMD ["sh", "-c", "node_modules/.bin/prisma db push --skip-generate && node server.js"]
+CMD ["sh", "-c", "node node_modules/prisma/build/index.js db push --skip-generate && node server.js"]
