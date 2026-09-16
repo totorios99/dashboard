@@ -38,6 +38,17 @@ services:
     image: containrrr/watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      # Credenciales de ghcr.io para las imagenes privadas (nido-del-amor).
+      # Watchtower hace sus propias llamadas al registry desde dentro del
+      # contenedor: el `docker login` del host no le llega solo.
+      #
+      # Se monta el DIRECTORIO, no el archivo. `docker login` no edita
+      # config.json en sitio: escribe un temporal y lo renombra, creando un
+      # inodo nuevo. Un bind de archivo fija el inodo viejo y el contenedor
+      # se queda mirando credenciales obsoletas para siempre.
+      - ${HOME}/.docker:/config:ro
+    environment:
+      DOCKER_CONFIG: /config
     command: --label-enable --interval 300 --cleanup
     restart: unless-stopped
 
