@@ -7,14 +7,20 @@ services:
     environment:
       DATABASE_URL: "file:/data/cockpit.db"
       VAULT_ROOT: /vaults
+    # Runs as antonio (1000:1000) so milestone toggles can write STATUS.md back
+    # to the vault. The pillar vaults are owned 1000:1000; the container image
+    # defaults to uid 1001, which cannot write them even without :ro. The
+    # cockpit_db volume is chowned to match (see the alpine one-liner in the
+    # cockpit note). Next standalone only writes /data and /vaults at runtime.
+    user: "1000:1000"
     volumes:
       # SQLite database — persists across container restarts
       - cockpit_db:/data
       # Vault directories — mount your Obsidian vaults here
-      - ${HOME}/Documents/The Alchemist's Atrium/cyber-brain:/vaults/cyber-brain:ro
-      - ${HOME}/Documents/The Alchemist's Atrium/fitness-brain:/vaults/fitness-brain:ro
-      - ${HOME}/Documents/The Alchemist's Atrium/spirituality-brain:/vaults/spirituality-brain:ro
-      - ${HOME}/Documents/The Alchemist's Atrium/homelab-brain:/vaults/homelab-brain:ro
+      - ${HOME}/Documents/The Alchemist's Atrium/cyber-brain:/vaults/cyber-brain
+      - ${HOME}/Documents/The Alchemist's Atrium/fitness-brain:/vaults/fitness-brain
+      - ${HOME}/Documents/The Alchemist's Atrium/spirituality-brain:/vaults/spirituality-brain
+      - ${HOME}/Documents/The Alchemist's Atrium/homelab-brain:/vaults/homelab-brain
       - ${HOME}/Documents/The Alchemist's Atrium/central-brain:/vaults/central-brain
     restart: unless-stopped
     healthcheck:
